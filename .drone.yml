@@ -1,0 +1,13 @@
+pipeline:
+  docker:
+    image: plugins/docker
+    repo: johnpeel/project1
+    secrets: [ docker_username, docker_password ]
+  deploy:
+    image: peloton/drone-rancher
+    url: http://149.56.143.71:8080
+    service: web/project1
+    secrets: [ rancher_access_key, rancher_secret_key ]
+    docker_image: johnpeel/project1
+    confirm: true
+    timeout: 240
