@@ -6,7 +6,7 @@ pipeline:
   deploy:
     image: peloton/drone-rancher
     url: http://149.56.143.71:8080
-    service: web/project1
+    service: project1/project1
     secrets: [ rancher_access_key, rancher_secret_key ]
     docker_image: johnpeel/project1
     confirm: true
