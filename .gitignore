@@ -3,4 +3,6 @@
 *.swp
 *.tmp
 *.egg-info
+.idea/
+venv/
 secrets.yml
