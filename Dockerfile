@@ -2,7 +2,8 @@ FROM python:alpine
 MAINTAINER John Peel "john@dgby.org"
 COPY . /app
 WORKDIR /app
-RUN pip install --upgrade pip setuptools
-RUN pip install -r requirements.txt
+RUN apk add --no-cache build-base \
+  & pip install --upgrade pip setuptools \
+  & pip install -r requirements.txt
 ENTRYPOINT ["python"]
 CMD ["app.py"]
