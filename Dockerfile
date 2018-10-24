@@ -17,8 +17,9 @@ RUN unzip /instantclient-*.zip \
  && rm /instantclient-*.zip \
  && mv ${INSTANTCLIENT} /usr/lib/
 
-COPY . /app
+COPY requirements.txt /app
 RUN pip install -r requirements.txt
+COPY . /app
 
-ENTRYPOINT ["python"]
+ENTRYPOINT ["python3"]
 CMD ["app.py"]
