@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block header %}
+    <h1>Status Page</h1>
+{% endblock %}
+
+{% block content %}
+    <p>Flask Version: {{ flask.__version__ }}</p>
+    <p>cx_Oracle Version: {{ oracle.__version__ }}</p>
+    <p>Oracle Client Version: {{ '%d.%d.%d.%d.%d' % oracle.clientversion() }}</p>
+    <p>Database Version: {{ db.version }}</p>
+{% endblock %}
