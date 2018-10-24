@@ -5,7 +5,7 @@ import db
 import cx_Oracle
 
 app = Flask(__name__)
-
+database = db.get_conn()
 
 @app.route('/')
 def hello_world():
@@ -14,7 +14,7 @@ def hello_world():
 
 @app.route('/status')
 def status():
-    return render_template('status.html', flask=flask, oracle=cx_Oracle, db=db.get_conn())
+    return render_template('status.html', flask=flask, oracle=cx_Oracle, db=db)
 
 
 if __name__ == '__main__':

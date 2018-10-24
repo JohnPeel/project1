@@ -8,5 +8,6 @@
     <p>Flask Version: {{ flask.__version__ }}</p>
     <p>cx_Oracle Version: {{ oracle.__version__ }}</p>
     <p>Oracle Client Version: {{ '%d.%d.%d.%d.%d' % oracle.clientversion() }}</p>
-    <p>Database Version: {{ db.version }}</p>
+    <p>Database Connected: {{ db.try_connection() }}</p>
+    <p>Database Version: {{ db.get_conn().version }}</p>
 {% endblock %}
