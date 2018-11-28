@@ -39,6 +39,3 @@ def get_cursor():
     return get_conn().cursor()
 
 
-def query(x):
-    for result in get_cursor().execure(x):
-        yield result

@@ -1,10 +1,13 @@
 {% extends 'base.html' %}
 
+{% block title %}Status{% endblock %}
+
 {% block header %}
     <h1>Status Page</h1>
 {% endblock %}
 
 {% block content %}
+    <a href="{{ url_for('index') }}">Back</a>
     <p>Flask Version: {{ flask.__version__ }}</p>
     <p>cx_Oracle Version: {{ oracle.__version__ }}</p>
     <p>Oracle Client Version: {{ '%d.%d.%d.%d.%d' % oracle.clientversion() }}</p>

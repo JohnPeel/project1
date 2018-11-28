@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}Seasons{% endblock %}
+
+{% block header %}
+    <h1>Seasons</h1>
+{% endblock %}
+
+{% block content %}
+    <ul>
+    {% for season in seasons %}
+        <li><a href="{{ url_for('season', season=season) }}">Season {{ season }}</a></li>
+    {% endfor %}
+    </ul>
+{% endblock %}

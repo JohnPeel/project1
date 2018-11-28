@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}Season {{ season }} - Week {{ week }}{% endblock %}
+
+{% block header %}
+    <h1>Season {{ season }} - Week {{ week }}</h1>
+{% endblock %}
+
+{% block content %}
+    <a href="{{ request.referrer }}">Go back</a><br/>
+    {% for game in games %}
+        <a href="{{ url_for('game', id=game[2]) }}">{{ game[0] }} vs {{ game[1] }}</a><br/>
+    {% endfor %}
+{% endblock %}
