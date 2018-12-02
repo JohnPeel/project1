@@ -25,7 +25,7 @@ RUN python -m venv /app/venv \
 COPY . /app
 
 ENV FLASK_APP app.py
-RUN adduser -D appuser
+RUN adduser -D appuser \
  && chown -R appuser:appuser /app
 USER appuser
 
