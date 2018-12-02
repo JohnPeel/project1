@@ -9,36 +9,14 @@ clone:
   depth: 1
 
 steps:
-- name: restore-cache
-  image: drillster/drone-volume-cache
-  settings:
-    restore: true
-    cache_key: [ DRONE_REPO_OWNER, DRONE_REPO_NAME ]
-  mount:
-  - /drone/docker
-  volumes:
-  - name: cache
-    path: /cache
 - name: build
   image: plugins/docker
   settings:
     repo: johnpeel/project1
-    storage_path: /drone/docker
-    purge: false
     username:
       from_secret: docker_username
     password:
       from_secret: docker_password
-- name: rebuild-cache
-  image: drillster/drone-volume-cache
-  settings:
-    rebuild: true
-    cache_key: [ DRONE_REPO_OWNER, DRONE_REPO_NAME ]
-  mount:
-  - /drone/docker
-  volumes:
-  - name: cache
-    path: /cache
 - name: deploy
   image: peloton/drone-rancher
   settings:
@@ -52,8 +30,3 @@ steps:
       from_secret: rancher_access_key
     secret_key:
       from_secret: rancher_secret_key
-
-volumes:
-- name: cache
-  host:
-    path: /opt/cache
