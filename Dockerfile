@@ -16,16 +16,14 @@ ADD https://dgby.org/~john/.oracle/instantclient-basiclite-linux.x64-11.2.0.4.0.
 RUN unzip /instantclient-*.zip \
  && rm /instantclient-*.zip \
  && mv ${INSTANTCLIENT} /usr/lib/
-
-COPY requirements.txt /app
+ 
+ENV FLASK_APP app.py
+COPY . /app
 RUN python -m venv /app/venv \
  && /app/venv/bin/pip install -r requirements.txt \
  && /app/venv/bin/pip install gunicorn \
- && chmod +x /app/boot.sh
-COPY . /app
-
-ENV FLASK_APP app.py
-RUN adduser -D appuser \
+ && chmod +x /app/boot.sh \
+ && adduser -D appuser \
  && chown -R appuser:appuser /app
 USER appuser
 
