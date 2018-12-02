@@ -18,8 +18,14 @@ RUN unzip /instantclient-*.zip \
  && mv ${INSTANTCLIENT} /usr/lib/
 
 COPY requirements.txt /app
-RUN pip install -r requirements.txt
+RUN python -m venv /app/venv \
+ && /app/venv/bin/pip install -r requirements.txt \
+ && /app/venv/bin/pip install gunicorn
 COPY . /app
 
-ENTRYPOINT ["python3"]
-CMD ["app.py"]
+ENV FLASK_APP app.py
+RUN adduser -D appuser
+ && chown -R appuser:appuser /app
+USER appuser
+
+ENTRYPOINT ["./boot.sh"]
