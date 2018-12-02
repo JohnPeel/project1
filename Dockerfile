@@ -20,7 +20,7 @@ RUN unzip /instantclient-*.zip \
 COPY requirements.txt /app
 RUN python -m venv /app/venv \
  && /app/venv/bin/pip install -r requirements.txt \
- && /app/venv/bin/pip install gunicorn
+ && /app/venv/bin/pip install gunicorn \
  && chmod +x /app/boot.sh
 COPY . /app
 
