@@ -1,31 +1,49 @@
-pipeline:
-  restore-cache:
-    image: drillster/drone-volume-cache
+kind: pipeline
+name: default
+
+platform:
+  os: linux
+  arch: amd64
+
+steps:
+- name: restore-cache
+  image: drillster/drone-volume-cache
+  settings:
     restore: true
-    mount:
-      - /drone/docker
-    volumes:
-    - /opt/cache:/cache
     cache_key: [ DRONE_REPO_OWNER, DRONE_REPO_NAME ]
-  docker:
-    image: plugins/docker
+  mount:
+  - /drone/docker
+  volumes:
+  - /opt/cache:/cache
+- name: build
+  image: plugins/docker
+  settings:
     repo: johnpeel/project1
-    secrets: [ docker_username, docker_password ]
     storage_path: /drone/docker
     purge: false
-  rebuild-cache:
-    image: drillster/drone-volume-cache
+    username:
+      from_secret: docker_username
+    password:
+      from_secret: docker_password
+- name: rebuild-cache
+  image: drillster/drone-volume-cache
+  settings:
     rebuild: true
-    mount:
-      - /drone/docker
-    volumes:
-      - /opt/cache:/cache
     cache_key: [ DRONE_REPO_OWNER, DRONE_REPO_NAME ]
-  deploy:
-    image: peloton/drone-rancher
+  mount:
+  - /drone/docker
+  volumes:
+  - /opt/cache:/cache
+- name: deploy
+  image: peloton/drone-rancher
+  settings:
     url: http://149.56.143.71:8080
     service: project1/project1
-    secrets: [ rancher_access_key, rancher_secret_key ]
     docker_image: johnpeel/project1
     confirm: true
     timeout: 240
+    start_first: false
+    access_key:
+      from_secret: rancher_access_key
+    secret_key:
+      from_secret: rancher_secret_key
