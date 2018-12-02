@@ -5,6 +5,9 @@ platform:
   os: linux
   arch: amd64
 
+clone:
+  depth: 1
+
 steps:
 - name: restore-cache
   image: drillster/drone-volume-cache
@@ -14,7 +17,8 @@ steps:
   mount:
   - /drone/docker
   volumes:
-  - /opt/cache:/cache
+  - name: cache
+    path: /cache
 - name: build
   image: plugins/docker
   settings:
@@ -33,7 +37,8 @@ steps:
   mount:
   - /drone/docker
   volumes:
-  - /opt/cache:/cache
+  - name: cache
+    path: /cache
 - name: deploy
   image: peloton/drone-rancher
   settings:
@@ -47,3 +52,8 @@ steps:
       from_secret: rancher_access_key
     secret_key:
       from_secret: rancher_secret_key
+
+volumes:
+- name: cache
+  host:
+    path: /opt/cache
