@@ -21,6 +21,7 @@ COPY requirements.txt /app
 RUN python -m venv /app/venv \
  && /app/venv/bin/pip install -r requirements.txt \
  && /app/venv/bin/pip install gunicorn
+ && chmod +x /app/boot.sh
 COPY . /app
 
 ENV FLASK_APP app.py
@@ -28,4 +29,4 @@ RUN adduser -D appuser
  && chown -R appuser:appuser /app
 USER appuser
 
-ENTRYPOINT ["./boot.sh"]
+ENTRYPOINT ["/app/boot.sh"]
