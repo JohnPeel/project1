@@ -1,0 +1,9 @@
+header nav {
+}
+#main {
+    margin: 20px;
+}
+.chart-container.cute-chart {
+    width: 600px;
+    height: 400px;
+}
