@@ -1,2 +1,2 @@
-import views.informational
-import views.status
+from .informational import *
+from .status import *
