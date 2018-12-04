@@ -2,7 +2,7 @@
 
 {% block title -%}Game{%- endblock %}
 
-{% block header -%}
+{% block heading -%}
     <a href="{{ request.referrer }}">Go back</a>
     <a href="{{ url_for('season') }}">Season List</a>
     <a href="{{ url_for('season', season=game[3]) }}">Season {{ game[3] }}</a>
