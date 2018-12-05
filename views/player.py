@@ -194,7 +194,7 @@ FROM
     avgs_headers = all_avgs.description
     seasons = [i[0] for i in avgs_data]
 
-    return render_template('player/player.html',
+    return render_template('player/player_stats.html',
                            player_data=player.fetchone(), player_data_headers=player.description,
                            seasons=seasons, avgs_data=avgs_data, avgs_headers=avgs_headers)
 
