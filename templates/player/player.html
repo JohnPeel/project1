@@ -1,0 +1,80 @@
+
+{% extends 'base.html' %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='player/style.css') }}">
+{% endblock %}
+
+{% block title %}Game{% endblock %}
+
+{% block heading %}
+<h2 class="person-name">{{ player_data[0] }} {{ player_data[1] }}</h2>
+{% endblock %}
+
+{% block content %}
+<table class="player-info table table-sm">
+    <thead>
+    <tr>
+        {% for column in player_data_headers %}
+        <th scope="col">{{ column[0] }}</th>
+        {% endfor %}
+    </tr>
+    </thead>
+    <tbody>
+        <tr>
+            {% for tuple_data in player_data %}
+            <td>{{ tuple_data }}</td>
+            {% endfor %}
+        </tr>
+    </tbody>
+</table>
+<div class="charts-container">
+{% for table_i in range(1, 11) %}
+    <div class="chart-container">
+        <canvas id="{{ avgs_headers[table_i][0] }}"></canvas>
+    </div>
+{% endfor %}
+</div>
+<script>
+{% for table_i in range(1, 11) %}
+const chart_{{ avgs_headers[table_i][0] }} = new Chart($('#{{ avgs_headers[table_i][0] }}'), {
+    type: 'line',
+    data: {
+        labels: {{ seasons | tojson }},
+        datasets: [{
+            label: 'PLAYER_{{ avgs_headers[table_i][0] }}',
+            backgroundColor: '#4fbcf5',
+            borderColor: '#1f5c45',
+            fill: false,
+            data: [
+                {% for avg in avgs_data %}
+                {% if avg[0] in seasons %}
+                    {{ avg[table_i] }},
+                {% endif %}
+                {% endfor %}
+            ],
+        }, {
+            label: '{{ avgs_headers[table_i + 10][0] }}',
+            fill: false,
+            backgroundColor: '#df6c65',
+            borderColor: '#7f3c35',
+            data: [
+                {% for avg in avgs_data %}
+                {% if avg[0] in seasons %}
+                    {{ avg[table_i + 10] }},
+                {% endif %}
+                {% endfor %}
+            ],
+        }],
+    },
+    options: {
+        responsive: true,
+        title: {
+            display: true,
+            text: '{{ avgs_headers[table_i][0] }}'
+        },
+    },
+});
+{% endfor %}
+</script>
+{% endblock %}
