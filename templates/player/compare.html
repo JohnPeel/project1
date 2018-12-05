@@ -9,7 +9,11 @@
 
 {% block heading %}
 <h1>{{ label | capitalize }} Players Comparison</h1>
+{% if ( player1 ) and ( player2 ) %}
 <h3>{{ player1[1] }} {{ player1[2] }} VS {{ player2[1] }} {{ player2[2] }}</h3>
+{% else %}
+<h3>Players not found</h3>
+{% endif %}
 {% endblock %}
 
 {% block content %}
@@ -22,15 +26,13 @@
     </tr>
     </thead>
     <tbody>
-    {% if player1 %}
-    <tr class="clickable-row" data-href="">
+    {% if ( player1 ) and ( player2 ) %}
+    <tr class="clickable-row" data-href="{{ url_for('player_stats', id=player1[0]) }}">
         {% for tuple_data in player1[1:] %}
         <td>{{ tuple_data }}</td>
         {% endfor %}
     </tr>
-    {% endif %}
-    {% if player2 %}
-    <tr class="clickable-row" data-href="">
+    <tr class="clickable-row" data-href="{{ url_for('player_stats', id=player2[0]) }}">
         {% for tuple_data in player2[1:] %}
         <td>{{ tuple_data }}</td>
         {% endfor %}
@@ -38,4 +40,11 @@
     {% endif %}
     </tbody>
 </table>
+<script>
+    $(document).ready(() => {
+        $('.clickable-row').click(function() {
+            window.location = $(this).data('href');
+        });
+    });
+</script>
 {% endblock %}

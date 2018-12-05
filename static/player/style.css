@@ -7,6 +7,9 @@
     width: 500px;
     height: 300px;
 }
+.clickable-row {
+    cursor: pointer;
+}
 .person-name {
     margin-bottom: 30px;
 }
