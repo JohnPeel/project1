@@ -35,14 +35,14 @@
     </tbody>
 </table>
 <div class="charts-container">
-{% for table_i in range(1, 11) %}
+{% for table_i in range(1, 10) %}
     <div class="chart-container">
         <canvas id="{{ avgs_headers[table_i][0] }}"></canvas>
     </div>
 {% endfor %}
 </div>
 <script>
-{% for table_i in range(1, 11) %}
+{% for table_i in range(1, 10) %}
 const chart_{{ avgs_headers[table_i][0] }} = new Chart($('#{{ avgs_headers[table_i][0] }}'), {
     type: 'line',
     data: {
@@ -54,20 +54,20 @@ const chart_{{ avgs_headers[table_i][0] }} = new Chart($('#{{ avgs_headers[table
             fill: false,
             data: [
                 {% for avg in avgs_data %}
-                {% if avg[0] in seasons %}
+                {% if ( avg[0] in seasons ) and ( avg[table_i] is not none ) %}
                     {{ avg[table_i] }},
                 {% endif %}
                 {% endfor %}
             ],
         }, {
-            label: '{{ avgs_headers[table_i + 10][0] }}',
+            label: '{{ avgs_headers[table_i + 9][0] }}',
             fill: false,
             backgroundColor: '#df6c65',
             borderColor: '#7f3c35',
             data: [
                 {% for avg in avgs_data %}
                 {% if avg[0] in seasons %}
-                    {{ avg[table_i + 10] }},
+                    {{ avg[table_i + 9] }},
                 {% endif %}
                 {% endfor %}
             ],
