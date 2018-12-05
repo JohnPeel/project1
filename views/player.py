@@ -5,12 +5,16 @@ from flask import render_template
 from db import get_cursor
 
 @app.route('/player')
-def player_list():
+def player():
     # List some players
+    return render_template('player/index.html')
+
+@app.route('/player/<id1>/<id2>/compare')
+def compare_players_receiver(id1, id2):
     return ''
 
 @app.route('/player/<id>')
-def player(id):
+def player_stats(id):
     player_sql = '''
     SELECT
         FIRST_NAME,

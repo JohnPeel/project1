@@ -5,10 +5,14 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='player/style.css') }}">
 {% endblock %}
 
-{% block title %}Game{% endblock %}
+{% block title %}Player{% endblock %}
 
 {% block heading %}
+{% if not player_data %}
+<h2 class="person-name">No player found</h2>
+{% else %}
 <h2 class="person-name">{{ player_data[0] }} {{ player_data[1] }}</h2>
+{% endif %}
 {% endblock %}
 
 {% block content %}
@@ -22,9 +26,11 @@
     </thead>
     <tbody>
         <tr>
+            {% if player_data %}
             {% for tuple_data in player_data %}
             <td>{{ tuple_data }}</td>
             {% endfor %}
+            {% endif %}
         </tr>
     </tbody>
 </table>

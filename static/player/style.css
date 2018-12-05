@@ -1,6 +1,7 @@
 .charts-container {
     display: flex;
     flex-wrap: wrap;
+    justify-content: space-between;
 }
 .chart-container {
     width: 500px;
