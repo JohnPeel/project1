@@ -9,12 +9,6 @@ def home():
     return render_template('index.html')
 
 
-@app.route('/player')
-@app.route('/player/<id>')
-def player(id=None):
-    return ''
-
-
 @app.route('/team')
 @app.route('/team/<abbr>')
 def team(abbr=None):
