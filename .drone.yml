@@ -18,9 +18,6 @@ steps:
       from_secret: docker_username
     password:
       from_secret: docker_password
-  when:
-    branch:
-    -  master
 - name: deploy
   image: peloton/drone-rancher
   settings:
@@ -34,6 +31,3 @@ steps:
       from_secret: rancher_access_key
     secret_key:
       from_secret: rancher_secret_key
-  when:
-    branch:
-    -  master
