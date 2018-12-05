@@ -11,7 +11,55 @@ def player():
 
 @app.route('/player/<id1>/<id2>/compare')
 def compare_players_receiver(id1, id2):
-    return ''
+    re_com_sql = '''
+WITH common_games AS (
+SELECT
+  g1.ID
+FROM
+  JPEEL.PLAYERS p1
+  CROSS JOIN JPEEL.PLAYERS p2
+  JOIN JPEEL.STATS s1 ON (p1.ID = s1.PLAYER_ID)
+  JOIN JPEEL.GAME g1 ON (s1.GAME_ID = g1.ID)
+  JOIN JPEEL.STATS s2 ON (p2.ID = s2.PLAYER_ID)
+  JOIN JPEEL.GAME g2 ON (s2.GAME_ID = g2.ID)
+WHERE
+  (p1.ID = :id1
+  AND p2.ID = :id2)
+  AND g1.ID = g2.ID
+), player_stats AS (
+SELECT p.ID,
+  ROUND(AVG(PASSING_YARDS), 2)         AVG_PASSING_YARDS,
+  ROUND(AVG(PASSING_TOUCHDOWNS), 2)    AVG_PASSING_TOUCHDOWNS,
+  ROUND(AVG(PASSING_INTERCEPTIONS), 2) AVG_PASSING_INTERCEPTIONS,
+  ROUND(AVG(PASSING_ATTEMPTS), 2)      AVG_PASSING_ATTEMPTS
+FROM
+  common_games
+  JOIN JPEEL.STATS s ON (common_games.ID = s.GAME_ID)
+  JOIN JPEEL.PLAYERS p ON (s.PLAYER_ID = p.ID)
+WHERE
+  (p.ID = :id1
+  OR p.ID = :id2)
+GROUP BY (p.ID)
+)
+SELECT
+  p.ID,
+  p.FIRST_NAME,
+  p.LAST_NAME,
+  AVG_PASSING_YARDS,
+  AVG_PASSING_TOUCHDOWNS,
+  AVG_PASSING_INTERCEPTIONS,
+  AVG_PASSING_ATTEMPTS
+FROM
+  player_stats ps
+  JOIN JPEEL.PLAYERS p ON (ps.ID = p.ID)
+    '''.strip()
+    data = get_cursor().execute(re_com_sql, id1=id1, id2=id2)
+    headers = data.description
+    player1 = data.fetchone()
+    player2 = data.fetchone()
+    label = 'passer'
+
+    return render_template('player/compare.html', label=label, player1=player1, player2=player2, headers=headers)
 
 @app.route('/player/<id>')
 def player_stats(id):

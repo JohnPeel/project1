@@ -1,0 +1,41 @@
+
+{% extends 'base.html' %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='player/style.css') }}">
+{% endblock %}
+
+{% block title %}Compare Player{% endblock %}
+
+{% block heading %}
+<h1>{{ label | capitalize }} Players Comparison</h1>
+<h3>{{ player1[1] }} {{ player1[2] }} VS {{ player2[1] }} {{ player2[2] }}</h3>
+{% endblock %}
+
+{% block content %}
+<table class="player-info table table-hover">
+    <thead>
+    <tr>
+        {% for column in headers[1:] %}
+        <th scope="col">{{ column[0] }}</th>
+        {% endfor %}
+    </tr>
+    </thead>
+    <tbody>
+    {% if player1 %}
+    <tr class="clickable-row" data-href="">
+        {% for tuple_data in player1[1:] %}
+        <td>{{ tuple_data }}</td>
+        {% endfor %}
+    </tr>
+    {% endif %}
+    {% if player2 %}
+    <tr class="clickable-row" data-href="">
+        {% for tuple_data in player2[1:] %}
+        <td>{{ tuple_data }}</td>
+        {% endfor %}
+    </tr>
+    {% endif %}
+    </tbody>
+</table>
+{% endblock %}
