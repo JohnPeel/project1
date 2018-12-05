@@ -198,3 +198,27 @@ FROM
                            player_data=player.fetchone(), player_data_headers=player.description,
                            seasons=seasons, avgs_data=avgs_data, avgs_headers=avgs_headers)
 
+# Route simply returns an ID or null
+@app.route('/player/search/<name>')
+def player_search(name):
+    sql = '''
+SELECT
+    p.ID
+FROM
+    JPEEL.PLAYERS p
+WHERE
+    (UPPER(TRIM(p.FIRST_NAME)) = :first
+    AND UPPER(TRIM(p.LAST_NAME)) = :last)
+    OR p.ID = :name
+    '''.strip()
+
+    first = name
+    last = ''
+    if ('+' in name):
+        name_parts = name.split('+', 1)
+        first = name_parts[0].strip().upper()
+        last = name_parts[1].strip().upper()
+    player = get_cursor().execute(sql, first=first, last=last, name=name).fetchone()
+    if (player is None):
+        return ''
+    return player[0]

@@ -1,0 +1,37 @@
+<div class="compare-form">
+    <form>
+        <div class="form-group">
+            <label>Player 1 Name</label>
+            <input type="text" class="player form-control" id="player1" />
+        </div>
+        <div class="form-group">
+            <label>Player 2 Name</label>
+            <input type="text" class="player form-control" id="player2" />
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+    <script>
+        $(document).ready(() => {
+            $('.compare-form').submit(function(e) {
+                e.preventDefault();
+                let p1 = $('#player1').val().replace(' ', '+');
+                let p2 = $('#player2').val().replace(' ', '+');
+                navigateToComparePlayers(p1, p2);
+            });
+        });
+
+        async function navigateToComparePlayers(p1, p2) {
+            const player1 = await fetch('/player/search/' + p1).then(r => r.text());
+            const player2 = await fetch('/player/search/' + p2).then(r => r.text());
+            if (!player1) {
+                alert('Unable to find player: ' + p1);
+                return;
+            }
+            if (!player2) {
+                alert('Unable to find player: ' + p2);
+                return;
+            }
+            window.location = `/player/${player1}/${player2}/compare`;
+        }
+    </script>
+</div>
