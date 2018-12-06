@@ -27,10 +27,37 @@ FROM jpeel.GAME G,jpeel.TEAM A, jpeel.TEAM B
 WHERE A.TEAM_ABBR = HOME_TEAM
   AND B.TEAM_ABBR = AWAY_TEAM
   AND G.id = :0''', (id,)).fetchall()
-    stats = get_cursor().execute('''SELECT * FROM STATS S, PLAYERS P WHERE GAME_ID=:0 AND S.PLAYER_ID=P.ID ORDER BY S.TEAM_ABBR''', (id,)).fetchall()
 
     if len(game) != 1:
         return 'ERROR'
+
+    stats = get_cursor().execute('''
+    SELECT
+           TEAM_ABBR,
+           PLAYER_ID,
+           FIRST_NAME,
+           LAST_NAME,
+           RECEIVING_YARDS,
+           RECEIVING_TOUCHDOWNS,
+           PASSING_YARDS,
+           PASSING_TOUCHDOWNS,
+           PASSING_INTERCEPTIONS,
+           PASSING_ATTEMPTS,
+           DEFENSIVE_SAFETIES,
+           DEFENSIVE_TACKLES,
+           DEFENSIVE_SACKS,
+           DEFENSIVE_ASSIST_TACKLES,
+           DEFENSIVE_INTERCEPTIONS,
+           RUSHING_TOUCHDOWNS,
+           RUSHING_YARDS,
+           RUSHING_ATTEMPTS
+    FROM
+         STATS S
+    JOIN PLAYERS P
+        ON (S.PLAYER_ID = P.ID)
+    WHERE GAME_ID=:0
+    ORDER BY S.TEAM_ABBR
+    ''', (id,)).fetchall()
 
     game = [str(x).strip() for x in game[0]]
 
