@@ -7,3 +7,9 @@ header nav {
     width: 600px;
     height: 400px;
 }
+.form-container {
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+}

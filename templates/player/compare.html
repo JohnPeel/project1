@@ -8,7 +8,7 @@
 {% block title %}Compare Player{% endblock %}
 
 {% block heading %}
-<h1>{{ label | capitalize }} Players Comparison</h1>
+<h1>Players Comparison</h1>
 {% if ( player1 ) and ( player2 ) %}
 <h3>{{ player1[1] }} {{ player1[2] }} VS {{ player2[1] }} {{ player2[2] }}</h3>
 {% else %}
@@ -20,29 +20,49 @@
 <table class="player-info table table-hover">
     <thead>
     <tr>
-        {% for column in headers[1:] %}
-        <th scope="col">{{ column[0] }}</th>
-        {% endfor %}
+        {% if ( player1 ) and ( player2 ) %}
+        <th></th>
+        <th scope="col" class="clickable" data-href="{{ url_for('player_stats', id=player1[0]) }}">
+            {{ player1[1] }} {{ player1[2] }}
+        </th>
+        <th scope="col" class="clickable" data-href="{{ url_for('player_stats', id=player2[0]) }}">
+            {{ player2[1] }} {{ player2[2] }}
+        </th>
+        {% endif %}
     </tr>
     </thead>
     <tbody>
     {% if ( player1 ) and ( player2 ) %}
-    <tr class="clickable-row" data-href="{{ url_for('player_stats', id=player1[0]) }}">
-        {% for tuple_data in player1[1:] %}
-        <td>{{ tuple_data }}</td>
-        {% endfor %}
+    {% for column in headers %}
+    {% if player1[loop.index0] is not none and player2[loop.index0] is not none and loop.index0 > 2 %}
+    <tr>
+        <th scope="row" class="stat-label">{{ column[0] }}</th>
+        {% set player_data = player1[loop.index0] %}
+        {% if player_data is number %}
+        <td class="{{ 'better-stat' if player_data > player2[loop.index0] }}">
+        {% else %}
+        <td>
+        {% endif %}
+            {{ player_data }}
+        </td>
+
+        {% set player_data = player2[loop.index0] %}
+        {% if player_data is number %}
+        <td class="{{ 'better-stat' if player_data > player1[loop.index0] }}">
+        {% else %}
+        <td>
+        {% endif %}
+            {{ player_data }}
+        </td>
     </tr>
-    <tr class="clickable-row" data-href="{{ url_for('player_stats', id=player2[0]) }}">
-        {% for tuple_data in player2[1:] %}
-        <td>{{ tuple_data }}</td>
-        {% endfor %}
-    </tr>
+    {% endif %}
+    {% endfor %}
     {% endif %}
     </tbody>
 </table>
 <script>
     $(document).ready(() => {
-        $('.clickable-row').click(function() {
+        $('.clickable').click(function() {
             window.location = $(this).data('href');
         });
     });

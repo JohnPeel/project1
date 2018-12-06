@@ -10,7 +10,7 @@ def player():
     return render_template('player/index.html')
 
 @app.route('/player/<id1>/<id2>/compare')
-def compare_players_receiver(id1, id2):
+def compare_players(id1, id2):
     re_com_sql = '''
 WITH common_games AS (
 SELECT
@@ -28,10 +28,15 @@ WHERE
   AND g1.ID = g2.ID
 ), player_stats AS (
 SELECT p.ID,
-  ROUND(AVG(PASSING_YARDS), 2)         AVG_PASSING_YARDS,
-  ROUND(AVG(PASSING_TOUCHDOWNS), 2)    AVG_PASSING_TOUCHDOWNS,
-  ROUND(AVG(PASSING_INTERCEPTIONS), 2) AVG_PASSING_INTERCEPTIONS,
-  ROUND(AVG(PASSING_ATTEMPTS), 2)      AVG_PASSING_ATTEMPTS
+  ROUND(AVG(PASSING_YARDS),2) AVG_PASSING_YARDS,
+  ROUND(AVG(PASSING_TOUCHDOWNS),2) AVG_PASSING_TOUCHDOWNS,
+  ROUND(AVG(PASSING_INTERCEPTIONS),2) AVG_PASSING_INTERCEPTIONS,
+  ROUND(AVG(PASSING_ATTEMPTS),2) AVG_PASSING_ATTEMPTS,
+  ROUND(AVG(RUSHING_YARDS),2) AVG_RUSHING_YARDS,
+  ROUND(AVG(RUSHING_TOUCHDOWNS),2) AVG_RUSHING_TOUCHDOWNS,
+  ROUND(AVG(RUSHING_ATTEMPTS),2) AVG_RUSHING_ATTEMPTS,
+  ROUND(AVG(RECEIVING_YARDS),2) AVG_RECEIVING_YARDS,
+  ROUND(AVG(RECEIVING_TOUCHDOWNS),2) AVG_RECEIVING_TOUCHDOWNS
 FROM
   common_games
   JOIN JPEEL.STATS s ON (common_games.ID = s.GAME_ID)
@@ -48,7 +53,12 @@ SELECT
   AVG_PASSING_YARDS,
   AVG_PASSING_TOUCHDOWNS,
   AVG_PASSING_INTERCEPTIONS,
-  AVG_PASSING_ATTEMPTS
+  AVG_PASSING_ATTEMPTS,
+  AVG_RUSHING_YARDS,
+  AVG_RUSHING_TOUCHDOWNS,
+  AVG_RUSHING_ATTEMPTS,
+  AVG_RECEIVING_YARDS,
+  AVG_RECEIVING_TOUCHDOWNS
 FROM
   player_stats ps
   JOIN JPEEL.PLAYERS p ON (ps.ID = p.ID)
@@ -57,9 +67,8 @@ FROM
     headers = data.description
     player1 = data.fetchone()
     player2 = data.fetchone()
-    label = 'passer'
 
-    return render_template('player/compare.html', label=label, player1=player1, player2=player2, headers=headers)
+    return render_template('player/compare.html', player1=player1, player2=player2, headers=headers)
 
 @app.route('/player/<id>')
 def player_stats(id):
@@ -194,7 +203,31 @@ FROM
     avgs_headers = all_avgs.description
     seasons = [i[0] for i in avgs_data]
 
-    return render_template('player/player.html',
+    return render_template('player/player_stats.html',
                            player_data=player.fetchone(), player_data_headers=player.description,
                            seasons=seasons, avgs_data=avgs_data, avgs_headers=avgs_headers)
 
+# Route simply returns an ID or null
+@app.route('/player/search/<name>')
+def player_search(name):
+    sql = '''
+SELECT
+    p.ID
+FROM
+    JPEEL.PLAYERS p
+WHERE
+    (UPPER(TRIM(p.FIRST_NAME)) = :first
+    AND UPPER(TRIM(p.LAST_NAME)) = :last)
+    OR p.ID = :name
+    '''.strip()
+
+    first = name
+    last = ''
+    if ('+' in name):
+        name_parts = name.split('+', 1)
+        first = name_parts[0].strip().upper()
+        last = name_parts[1].strip().upper()
+    player = get_cursor().execute(sql, first=first, last=last, name=name).fetchone()
+    if (player is None):
+        return ''
+    return player[0]
