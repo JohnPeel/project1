@@ -1,4 +1,4 @@
-<div class="compare-form">
+<div class="head-form">
     <form>
         <div class="form-group">
             <label>Player 1 Name</label>
@@ -12,7 +12,7 @@
     </form>
     <script>
         $(document).ready(() => {
-            $('.compare-form').submit(function(e) {
+            $('.head-form').submit(function(e) {
                 e.preventDefault();
                 let p1 = $('#player1').val().replace(' ', '+');
                 let p2 = $('#player2').val().replace(' ', '+');
@@ -31,7 +31,7 @@
                 alert('Unable to find player: ' + p2);
                 return;
             }
-            window.location = `/player/${player1}/${player2}/compare`;
+            window.location = `/player/${player1}/${player2}/head`;
         }
     </script>
 </div>
