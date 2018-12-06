@@ -33,7 +33,7 @@
         {% for stat in stats %}
         <tr>
             <td>{{ stat[0] }}</td>
-            <td><a href="{{ url_for('player', id=stat[1]) }}">{{ stat[2] }} {{ stat[3] }}</a></td>
+            <td><a href="{{ url_for('player_stats', id=stat[1]) }}">{{ stat[2] }} {{ stat[3] }}</a></td>
             {% for n in range(4,18) %}
                 <td>{{ stat[n]|default(0, true) }}</td>
             {% endfor %}
