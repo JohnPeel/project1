@@ -1,0 +1,27 @@
+<div class="head-form">
+    <form>
+        <div class="form-group">
+            <label>Player Name/ID</label>
+            <input type="text" class="player form-control" id="player" />
+        </div>
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+    <script>
+        $(document).ready(() => {
+            $('.head-form').submit(function(e) {
+                e.preventDefault();
+                let p = $('#player').val().replace(' ', '+');
+                navigateToPlayer(p);
+            });
+        });
+
+        async function navigateToPlayer(p) {
+            const player = await fetch('/player/search/' + p).then(r => r.text());
+            if (!p) {
+                alert('Unable to find player: ' + p1);
+                return;
+            }
+            window.location = `/player/${player}`;
+        }
+    </script>
+</div>
