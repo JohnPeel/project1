@@ -3,15 +3,16 @@
 {% block title -%}Game{%- endblock %}
 
 {% block heading -%}
-    <a href="{{ url_for('season') }}">Season List</a>
-    <a href="{{ url_for('season', season=game[3]) }}">Season {{ game[3] }}</a>
-    <a href="{{ url_for('season', season=game[3], week=game[4]) }}">Week {{ game[4] }}</a>
-    <h1>{{ game[0]|title }} ({{ game[7] }}) vs {{ game[1]|title }} ({{ game[8] }})</h1>
-    <h2>{{ game[5] }} to {{ game[6] }}</h2>
+    <h1 class="text-center">
+        <a href="{{ url_for('team', abbr=game[7]) }}">{{ game[0]|title }}</a> ({{ game[7] }})
+        vs
+        <a href="{{ url_for('team', abbr=game[8]) }}">{{ game[1]|title }}</a> ({{ game[8] }})
+    </h1>
+    <h2 class="text-center">{{ game[5] }} to {{ game[6] }}</h2>
 {% endblock -%}
 
 {% block content -%}
-    <table border="1">
+    <table class="table table-sm table-bordered table-hover table-striped">
         <tr>
             <th>Team</th>
             <th>Name</th>

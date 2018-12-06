@@ -7,7 +7,6 @@
 {% endblock %}
 
 {% block content %}
-    <a href="{{ request.referrer }}">Go back</a><br/>
     <ul>
     {% for week in weeks %}
         <li><a href="{{ url_for('season', season=season, week=week) }}">Week {{ week }}</a></li>
