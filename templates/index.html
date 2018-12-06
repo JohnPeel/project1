@@ -7,11 +7,10 @@
 {% endblock %}
 
 {% block content %}
-    <p>Welcome to blahblahblah!</p>
+    <p>Welcome to Fantasy Football Helper!</p>
     <a href="{{ url_for('status') }}">Status</a>
-    <a href="{{ url_for('season') }}">Seasons</a>
-    <a href="{{ url_for('game') }}">Game</a>
-    <a href="{{ url_for('team') }}">Team</a>
+    <a href="{{ url_for('season') }}">Season List</a>
+    <a href="{{ url_for('team') }}">Team List</a>
     <a href="{{ url_for('player') }}">Player</a>
     <div class="chart-container cute-chart">
         <canvas id="myChart"></canvas>
@@ -21,9 +20,9 @@ var ctx = document.getElementById("myChart").getContext('2d');
 var myChart = new Chart(ctx, {
     type: 'bar',
     data: {
-        labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+        labels: ["Sleepless nights", "Errors", "'i' before 'e' except after c ", "Red Bull", "Numerical analysis stress", "Dec 5th"],
         datasets: [{
-            label: 'My cute chart',
+            label: 'Stress Chart',
             data: [12, 19, 3, 5, 2, 3],
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',

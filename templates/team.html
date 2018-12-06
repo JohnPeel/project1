@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block title -%}Team Page{%- endblock %}
+
+{% block heading -%}
+    <h1>{{ team[0][1] }}</h1>
+{% endblock -%}
+
+{% block content -%}
+    <table class="table table-sm table-bordered table-hover table-striped">
+        <thead>
+            <tr>
+                <th scope="col"></th>
+                {% for header in headers %}
+                    <th scope="col">{{ header }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+        {% for stat in stats %}
+            <tr>
+                <th scope="row">{{ stat[0] }}</th>
+                {% for n in range(1,15) %}
+                    <td>{{ stat[n]|default(0, true) }}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+<div class="charts-container">
+{% for table_i in range(1, 13) %}
+    <div class="chart-container">
+        <canvas id="chart{{ table_i }}"></canvas>
+    </div>
+{% endfor %}
+</div>
+<script>
+{% for table_i in range(1, 13) %}
+const chart_{{ table_i }} = new Chart($('#chart{{ table_i }}'), {
+    type: 'line',
+    data: {
+        labels: {{ seasons | tojson }},
+        datasets: [{
+            label: '{{ headers[table_i] }}',
+            backgroundColor: '#4fbcf5',
+            borderColor: '#1f5c45',
+            fill: false,
+            data: [
+                {% for avg in stats %}
+                {% if ( avg[0] in seasons ) %}
+                    {{ avg[table_i] }},
+                {% endif %}
+                {% endfor %}
+            ],
+        }],
+    },
+    options: {
+        responsive: true,
+        title: {
+            display: true,
+            text: '{{ table_i }}'
+        },
+    },
+});
+{% endfor %}
+</script>
+{%- endblock %}
