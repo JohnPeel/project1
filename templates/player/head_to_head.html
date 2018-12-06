@@ -8,16 +8,17 @@
 {% block title %}Compare Player{% endblock %}
 
 {% block heading %}
-<h1>Players Comparison</h1>
+<h1>Head to Head</h1>
 {% if ( player1 ) and ( player2 ) %}
 <h3>{{ player1[1] }} {{ player1[2] }} VS {{ player2[1] }} {{ player2[2] }}</h3>
+<span class="muted">Showing average stats for games where the two players played against each other</span>
 {% else %}
 <h3>Players not found</h3>
 {% endif %}
 {% endblock %}
 
 {% block content %}
-<table class="player-info table table-hover">
+<table class="player-info table table-hover table-bordered">
     <thead>
     <tr>
         {% if ( player1 ) and ( player2 ) %}

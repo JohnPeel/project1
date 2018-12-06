@@ -18,6 +18,6 @@
 .better-stat {
     background-color: #deffde;
 }
-.player-info {
+.player-info.table-bordered {
     width: auto;
 }

@@ -9,8 +9,8 @@ def player():
     # List some players
     return render_template('player/index.html')
 
-@app.route('/player/<id1>/<id2>/compare')
-def compare_players(id1, id2):
+@app.route('/player/<id1>/<id2>/head')
+def players_head_to_head(id1, id2):
     re_com_sql = '''
 WITH common_games AS (
 SELECT
@@ -68,7 +68,7 @@ FROM
     player1 = data.fetchone()
     player2 = data.fetchone()
 
-    return render_template('player/compare.html', player1=player1, player2=player2, headers=headers)
+    return render_template('player/head_to_head.html', player1=player1, player2=player2, headers=headers)
 
 @app.route('/player/<id>')
 def player_stats(id):
