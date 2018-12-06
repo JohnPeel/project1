@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block content %}
-    <p>Welcome to blahblahblah!</p>
+    <p>Welcome to Fantasy Football Helper!</p>
     <a href="{{ url_for('status') }}">Status</a>
     <a href="{{ url_for('season') }}">Seasons</a>
     <a href="{{ url_for('game') }}">Game</a>
@@ -21,7 +21,7 @@ var ctx = document.getElementById("myChart").getContext('2d');
 var myChart = new Chart(ctx, {
     type: 'bar',
     data: {
-        labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+        labels: ["Sleepless nights", "Internal Service Errors", "'i' before 'e' except after c ", "Red Bull", "Numerical analysis stress", "Dec 5th"],
         datasets: [{
             label: 'My cute chart',
             data: [12, 19, 3, 5, 2, 3],
